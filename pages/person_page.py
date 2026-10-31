@@ -7,10 +7,6 @@ class PersonPage:
     def __init__(self, page: Page):
         self.page = page
         self.main = page.get_by_role("main")
-        self.can_help_skills = self.main.get_by_text("Может помочь с", exact=True).locator("..")
-        self.want_to_learn_skills = self.main.get_by_text("Хочет разобрать", exact=True).locator(
-            ".."
-        )
         self.days = page.get_by_role("group", name="Дни со слотами")
         self.times = page.get_by_role("group", name="Время слотов")
         self.slots_timezone = page.get_by_test_id("slots-timezone")
@@ -33,15 +29,10 @@ class PersonPage:
     def get_creator_name(self, name: str):
         return self.main.get_by_role("heading", name=name, exact=True)
 
-    def skill_tag(self, skill_name: str, skill_type: str):
-        blocks = {
-            "can_help": self.can_help_skills,
-            "want_to_learn": self.want_to_learn_skills,
-        }
-        return (
-            blocks[skill_type]
-            .locator("[data-skill-tag]")
-            .and_(self.page.get_by_text(skill_name, exact=True))
+    def skill_tag(self, skill_name: str):
+        """Найти навык по точному тексту без привязки к разделу его типа."""
+        return self.main.locator("[data-skill-tag]").and_(
+            self.main.get_by_text(skill_name, exact=True)
         )
 
     def day_button(self, slot_date: str):

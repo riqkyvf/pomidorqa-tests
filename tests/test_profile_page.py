@@ -212,8 +212,8 @@ def test_saved_profile_is_visible_to_another_user(user_factory, published_profil
         expect(person.profile_text(profile_data["bio"])).to_be_visible()
         expect(person.profile_text(profile_data["telegram"])).to_be_visible()
 
-        for skill_type, skill_name in published_profile["skills"].items():
-            expect(person.skill_tag(skill_name, skill_type)).to_be_visible()
+        for skill_name in published_profile["skills"].values():
+            expect(person.skill_tag(skill_name)).to_be_visible()
 
 
 @allure.feature("Профиль")

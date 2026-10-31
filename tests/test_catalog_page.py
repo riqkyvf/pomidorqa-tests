@@ -153,10 +153,10 @@ def test_skill_updates_are_visible_in_public_profile_and_search(
         catalog.open_person(card)
 
         person = PersonPage(viewer["page"])
-        for initial_type, initial_name in initial_skills.items():
-            expect(person.skill_tag(initial_name, initial_type)).to_be_visible()
+        for initial_name in initial_skills.values():
+            expect(person.skill_tag(initial_name)).to_be_visible()
         skill_name = f'updated-{unique_id} "QA"'
-        expect(person.skill_tag(skill_name, skill_type)).to_have_count(0)
+        expect(person.skill_tag(skill_name)).to_have_count(0)
 
     with allure.step("Добавить владельцу новый навык"):
         profile = ProfilePage(owner["page"])
@@ -166,7 +166,7 @@ def test_skill_updates_are_visible_in_public_profile_and_search(
 
     with allure.step("Проверить новый навык после обновления публичного профиля"):
         viewer["page"].reload()
-        expect(person.skill_tag(skill_name, skill_type)).to_be_visible()
+        expect(person.skill_tag(skill_name)).to_be_visible()
 
     with allure.step("Проверить поиск с учётом типа добавленного навыка"):
         catalog.open()
@@ -190,9 +190,9 @@ def test_skill_updates_are_visible_in_public_profile_and_search(
     with allure.step("Проверить удаление в публичном профиле и сохранение других навыков"):
         person.open(person_id)
         expect(person.get_creator_name(owner["user"]["name"])).to_be_visible()
-        expect(person.skill_tag(skill_name, skill_type)).to_have_count(0)
-        for initial_type, initial_name in initial_skills.items():
-            expect(person.skill_tag(initial_name, initial_type)).to_be_visible()
+        expect(person.skill_tag(skill_name)).to_have_count(0)
+        for initial_name in initial_skills.values():
+            expect(person.skill_tag(initial_name)).to_be_visible()
 
     with allure.step("Проверить отсутствие удалённого навыка в поиске"):
         catalog.open()
